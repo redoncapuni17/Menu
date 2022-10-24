@@ -5,25 +5,25 @@
 #include <locale.h>
 #include <inttypes.h>
 #include <stdbool.h>
-#define dosya_ismi "c:\\data\\menu.txt"
+#define filename "c:\\data\\menu.txt"
 
 int* D;
 int N = 0;
 int adet = 0;
 
 void menu(void);
-void dosya_oku(void);
-void ekle(void);
-void liste(void);
-void ara(void);
-void guncelle(void);
-void sil_f(void);
-void sil_m(void);
-void dosya_yaz(void);
+void read_file(void);
+void add(void);
+void list(void);
+void search(void);
+void update(void);
+void delete_ph(void);
+void delete_l(void);
+void write_file(void);
 
 int main() {
 	setlocale(LC_ALL, "Turkish");
-	dosya_oku();
+	read_file();
 	do {
 		menu();
 	} while (1);
@@ -32,7 +32,7 @@ int main() {
 }
 void menu(void) {
 	setlocale(LC_ALL, "Turkish");
-	char secim;
+	char choose;
 	system("cls");
 	printf("[Array Size : %d adet : %d] Menu\n", N, adet);
 	printf("  0-Read From File\n");
@@ -45,25 +45,25 @@ void menu(void) {
 	printf("  7-Save and Exit\n");
 	printf("Choose (1/2/3/4/5/6/7)? : ");
 	do {
-		secim = _getch();
-	} while (!(secim > 48 && secim < 56));
+		choose = _getch();
+	} while (!(choose > 48 && choose < 56));
 	printf("\n");
-	switch (secim) {
-	case 48:dosya_oku(); break;
-	case 49:ekle(); break;
-	case 50:ara(); break;
-	case 51:liste(); break;
-	case 52:guncelle(); break;
-	case 53:sil_f(); break;
-	case 54:sil_m(); break;
-	case 55: {dosya_yaz(); printf("\nIyi gunler\n"); system("pause"); exit(-1); }
+	switch (choose) {
+	case 48:read_file(); break;
+	case 49:add(); break;
+	case 50:search(); break;
+	case 51:list(); break;
+	case 52:update(); break;
+	case 53:delete_ph(); break;
+	case 54:delete_l(); break;
+	case 55: {read_file(); printf("\nHave a Nice Day\n"); system("pause"); exit(-1); }
 	}
 }
-void dosya_oku(void) {
+void read_file(void) {
 	FILE* fp;
 
 	int D_uz, i;
-	fp = fopen(dosya_ismi, "r");
+	fp = fopen(filename, "r");
 	fseek(fp, 0, SEEK_END);
 	D_uz = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
@@ -76,22 +76,22 @@ void dosya_oku(void) {
 	}
 	fclose(fp);
 }
-void ekle(void) {
-	int deger;
-	printf("Eklenecek deger : ");
-	scanf("%d", &deger);
+void add(void) {
+	int value;
+	printf("Value to add : ");
+	scanf("%d", &value);
 	if (adet + 1 > N) {
-		printf("Dizi Dolu !");
+		printf("Array Full !");
 		_getch();
 	}
 	else {
-		D[adet] = deger;
+		D[adet] = value;
 		adet++;
-		printf("Yeni deger dizi eklendi !\n");
+		printf("Added new value array !\n");
 		_getch();
 	}
 }
-void liste(void) {
+void list(void) {
 	int i;
 	for (i = 0; i < N; i++) {
 		if (D[i] != 0) {
@@ -100,96 +100,96 @@ void liste(void) {
 	}
 	_getch();
 }
-void ara() {
-	int i, ara_deger;
-	bool durum = false;
-	printf("Aranacak deger :");
-	scanf("%d", &ara_deger);
+void search() {
+	int i, intermediate_value;
+	bool situation = false;
+	printf("Value to look for :");
+	scanf("%d", &intermediate_value);
 	for (i = 0; i < N; i++) {
-		if (D[i] != 0 && ara_deger == D[i]) {
-			durum = true;
+		if (D[i] != 0 && intermediate_value == D[i]) {
+			situation = true;
 			break;
 		}
 	}
-	if (durum)fprintf(stdout, "Buldum :[%3d.]  %d\n", i, D[i]);
-	else printf("Bulamadim.\n");
+	if (situation)fprintf(stdout, "I found :[%3d.]  %d\n", i, D[i]);
+	else printf("I couldn't found it.\n");
 	_getch();
 }
-void guncelle(void) {
-	int i, gun_deger, deger;
-	bool durum = false;
-	printf("Guncellenecek deger : ");
-	scanf("%d", &gun_deger);
+void update(void) {
+	int i, value_day, value;
+	bool situation = false;
+	printf("Value to Update : ");
+	scanf("%d", &value_day);
 	for (i = 0; i < N; i++) {
-		if (D[i] != 0 && gun_deger == D[i]) {
-			durum = true;
+		if (D[i] != 0 && value_day == D[i]) {
+			situation = true;
 			break;
 		}
 	}
-	if (durum) {
-		fprintf(stdout, "Buldum : [%3d.] %d\n", i, D[i]);
-		printf("Yeni deger : ");
-		scanf("%d", &deger);
-		D[i] = deger;
-		printf("Guncellendi.\n");
+	if (situation) {
+		fprintf(stdout, "I found : [%3d.] %d\n", i, D[i]);
+		printf("New value : ");
+		scanf("%d", &value);
+		D[i] = value;
+		printf("Updated.\n");
 	}
 	else {
-		printf("Bulamadim.\n");
+		printf("I couldn't fount it.\n");
 	}
 	_getch();
 }
-void sil_f(void) {
-	int i, j, sil_deger;
-	bool durum = false;
-	printf("Silinecek  deger : ");
-	scanf("%d", &sil_deger);
+void delete_ph(void) {
+	int i, j, delete_value;
+	bool situation = false;
+	printf("Value to Deleted : ");
+	scanf("%d", &delete_value);
 	for (i = 0; i < adet; i++) {
-		if (sil_deger == D[i]) {
-			durum = true;
+		if (delete_value == D[i]) {
+			situation = true;
 			break;
 		}
 	}
-	if (durum) {
-		fprintf(stdout, "Buldum : [%3d.] %d\n", i, D[i]);
+	if (situation) {
+		fprintf(stdout, "I found : [%3d.] %d\n", i, D[i]);
 		for (j = i; j < adet; j++) {
 			D[j] = D[j + 1];
 		}
-		printf("Deger silindi.\n");
+		printf("Value deleted.\n");
 		D[adet] = 0;
 		adet--;
 	}
 	else {
-		printf("Bulamadim.\n");
+		printf("I couldn't found it.\n");
 	}
 	_getch();
 }
-void sil_m(void) {
-	int i, j, sil_deger;
-	bool durum = false;
-	printf("Silinecek  deger : ");
-	scanf("%d", &sil_deger);
+void delete_l(void) {
+	int i, j, delete_value;
+	bool situation = false;
+	printf("Value to Deleted : ");
+	scanf("%d", &delete_value);
 	for (i = 0; i < N; i++) {
-		if (D[i] != 0 && sil_deger == D[i]) {
-			durum = true;
+		if (D[i] != 0 && delete_value == D[i]) {
+			situation = true;
 			break;
 		}
 	}
-	if (durum) {
-		fprintf(stdout, "Buldum : [%3d.] %d\n", i, D[i]);
+	if (situation) {
+		fprintf(stdout, "I found : [%3d.] %d\n", i, D[i]);
 		D[i] = 0;
 		adet--;
-		printf("Deger silindi.\n");
+		printf("Value Deleted.\n");
 	}
 	else {
-		printf("Bulamadim.\n");
+		printf("I couldn't found it.\n");
 	}
 	_getch();
 }
-void dosya_yaz(void) {
+void write_file(void) {
 	FILE* fp;
 
 	int D_uz, i;
-	fp = fopen(dosya_ismi, "w");
+	fp = fopen(filename, "w");
 	for (i = 0; i < N; i++) {
 		if (D[i] != 0) {
 			fprintf(fp, "%d\n", D[i]);
