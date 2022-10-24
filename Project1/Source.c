@@ -34,16 +34,16 @@ void menu(void) {
 	setlocale(LC_ALL, "Turkish");
 	char secim;
 	system("cls");
-	printf("[Dizi Boyut : %d adet : %d] Menu\n", N, adet);
-	printf("  0-Dosyadan oku\n");
-	printf("  1-Kayit Ekle\n");
-	printf("  2-Kayit Ara\n");
-	printf("  3-Kayit Listele\n");
-	printf("  4-Kayit Guncelle\n");
-	printf("  5-Kayit Fiziksel\n");
-	printf("  6-Kayit Mantiksal Sil\n");
-	printf("  7- Kaydet ve Çik\n");
-	printf("Secim (1/2/3/4/5/6/7)? : ");
+	printf("[Array Size : %d adet : %d] Menu\n", N, adet);
+	printf("  0-Read From File\n");
+	printf("  1-Add Record\n");
+	printf("  2-Search Record\n");
+	printf("  3-List Record\n");
+	printf("  4-Update Record\n");
+	printf("  5-Record Physical\n");
+	printf("  6-Delete Record Logical\n");
+	printf("  7-Save and Exit\n");
+	printf("Choose (1/2/3/4/5/6/7)? : ");
 	do {
 		secim = _getch();
 	} while (!(secim > 48 && secim < 56));
@@ -199,4 +199,4 @@ void dosya_yaz(void) {
 }
 void buffersil(void) {
 	while (getchar() != '\n');
-}
+} 
